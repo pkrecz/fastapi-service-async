@@ -13,10 +13,10 @@ def start_application():
                     contact={
                                 "name": "Piotr",
                                 "email": "pkrecz@poczta.onet.pl"})
-    # registry.create_tables()
+    loop = asyncio.get_running_loop()
+    loop.create_task(registry.create_tables())
     registry.load_routers(app)
     registry.load_middleware(app)
     return app
-
 
 app = start_application()

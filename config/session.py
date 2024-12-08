@@ -5,6 +5,10 @@ from .database import engine
 
 
 db_session_context: ContextVar[Optional[int]] = ContextVar("db_session_context", default=None)
+local_session = async_sessionmaker(
+                                    bind=engine,
+                                    autoflush=False,
+                                    autocommit=False)
 
 
 def get_db_session_context():
@@ -19,10 +23,7 @@ def set_db_session_context(*, session_id: int):
 
 
 AsyncScopedSession = async_scoped_session(
-                                            session_factory=async_sessionmaker(
-                                                                                bind=engine,
-                                                                                autoflush=False,
-                                                                                autocommit=False),
+                                            session_factory=local_session,
                                             scopefunc=get_db_session_context)
 
 

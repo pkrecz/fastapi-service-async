@@ -10,8 +10,9 @@ from app_example import controlers as example_controlers
 logger = logging.getLogger("uvicorn.error")
 
 
-def create_tables():
-    example_models.Base.metadata.create_all(bind=engine)
+async def create_tables():
+    async with engine.begin() as transaction:
+        await transaction.run_sync(example_models.Base.metadata.create_all)
     logger.info("Tables has been created.")
 
 
